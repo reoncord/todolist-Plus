@@ -1,0 +1,26 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+
+.List {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.List input {
+  font-family: "Pretendard Variable";
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid rgb(155, 203, 255);
+  padding: 15px 0px;
+}
+
+.List input:focus {
+  outline: none;
+  border-bottom: 2px solid rgb(17, 136, 255);
+}
+
+.List .todos_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

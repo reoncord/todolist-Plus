@@ -1,0 +1,14 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+
+body {
+  font-family: "Pretendard Variable";
+  padding: 20px;
+}
+
+.App {
+  width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
