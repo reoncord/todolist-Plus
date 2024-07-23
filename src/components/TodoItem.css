@@ -27,3 +27,9 @@
   border-radius: 5px;
   padding: 5px;
 }
+
+/* 완료된 항목 스타일 */
+.TodoItem .content.done {
+  text-decoration: line-through; /* 밑줄 추가 */
+  color: #888; /* 완료된 항목 색상 변경 */
+}

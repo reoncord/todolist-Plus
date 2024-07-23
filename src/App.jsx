@@ -4,45 +4,34 @@ import Header from "./components/Header";
 import Editor from "./components/Editor";
 import List from "./components/List";
 
-const mockData = [
-  {
-    id: 0,
-    isDone: false,
-    content: "React 공부하기",
-    date: new Date().getTime(),
-  },
-  {
-    id: 1,
-    isDone: false,
-    content: "빨래하기",
-    date: new Date().getTime(),
-  },
-  {
-    id: 2,
-    isDone: false,
-    content: "노래 연습하기",
-    date: new Date().getTime(),
-  },
-];
+const initialData = []; // 초기 데이터 비워두기
 
 function reducer(state, action) {
   switch (action.type) {
     case "CREATE":
-      return [action.data, ...state];
+      // 새 항목 추가 시 최신 순서로 정렬
+      return [...state, action.data].sort((a, b) => b.date - a.date); // 미완료 항목은 최신 순서로 정렬
     case "UPDATE":
-      return state.map((item) =>
-        item.id === action.targetId ? { ...item, isDone: !item.isDone } : item
-      );
+      // 항목 업데이트 시 완료 상태 변경 및 최신 순서로 정렬
+      return state
+        .map((item) =>
+          item.id === action.targetId
+            ? { ...item, isDone: !item.isDone, date: new Date().getTime() }
+            : item
+        )
+        .sort((a, b) => a.isDone - b.isDone || b.date - a.date); // 완료된 항목은 최신 순서로 정렬
     case "DELETE":
-      return state.filter((item) => item.id !== action.targetId);
+      return state
+        .filter((item) => item.id !== action.targetId)
+        .sort((a, b) => a.isDone - b.isDone || b.date - a.date); // 미완료 항목 최신 순서로 정렬
     default:
       return state;
   }
 }
 
 function App() {
-  const [todos, dispatch] = useReducer(reducer, mockData);
-  const idRef = useRef(3); //mockData에서 id: 2까지 지정되어있기 때문에 id: 3이 기본값으로 들어감
+  const [todos, dispatch] = useReducer(reducer, initialData);
+  const idRef = useRef(1);
 
   const onCreate = useCallback((content) => {
     dispatch({
