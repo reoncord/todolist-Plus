@@ -6,7 +6,7 @@ body {
 }
 
 .App {
-  width: 500px;
+  /* width: 1000px; */
   margin: auto;
   display: flex;
   flex-direction: column;

@@ -1,5 +1,9 @@
 .Header {
   width: 780px;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
 }
 
 .Header > h1 {

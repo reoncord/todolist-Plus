@@ -1,4 +1,10 @@
+// App.js
 import { useState, useRef, useReducer, useCallback } from "react";
+import styled, {
+  ThemeProvider as StyledThemeProvider,
+} from "styled-components";
+import { ThemeProvider, useTheme } from "./themeContext";
+import { lightTheme, darkTheme } from "./theme";
 import "./App.css";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
@@ -41,9 +47,24 @@ function reducer(state, action) {
   }
 }
 
-function App() {
+const Body = styled.div`
+  background-color: ${({ theme }) => theme.body};
+  color: ${({ theme }) => theme.text};
+  width: 100%;
+  max-width: 1200px; // 최대 너비 설정
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s linear;
+  margin: 0 auto; // 가로 중앙 정렬
+  padding: 20px; // 패딩 추가
+`;
+
+function AppContent() {
   const [todos, dispatch] = useReducer(reducer, mockData);
-  const idRef = useRef(3); //mockData에서 id: 2까지 지정되어있기 때문에 id: 3이 기본값으로 들어감
+  const idRef = useRef(3);
 
   const onCreate = useCallback((content) => {
     dispatch({
@@ -65,19 +86,40 @@ function App() {
   }, []);
 
   const onDelete = useCallback((targetId) => {
-    dispatch({
-      type: "DELETE",
-      targetId: targetId,
-    });
+    if (window.confirm("정말 삭제하시겠나요?")) {
+      dispatch({
+        type: "DELETE",
+        targetId: targetId,
+      });
+    }
   }, []);
 
   return (
-    <div className="App">
+    <>
       <Header />
+      <Toggle />
       <Editor onCreate={onCreate} />
       <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
-    </div>
+    </>
   );
 }
 
-export default App;
+function App() {
+  const { theme } = useTheme();
+
+  return (
+    <StyledThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <Body>
+        <AppContent />
+      </Body>
+    </StyledThemeProvider>
+  );
+}
+
+export default function AppWrapper() {
+  return (
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  );
+}
