@@ -9,19 +9,25 @@ const List = ({ todos, onUpdate, onDelete }) => {
     setSearch(e.target.value);
   };
 
-  const getFilteredData = () => {
+  // 필터링된 데이터를 반환하는 함수
+  const getFilteredData = (filterCondition) => {
     if (search === "") {
-      return todos;
+      return todos.filter(filterCondition);
     }
-    return todos.filter((todo) =>
-      todo.content.toLowerCase().includes(search.toLowerCase())
-    );
+    return todos
+      .filter(filterCondition)
+      .filter((todo) =>
+        todo.content.toLowerCase().includes(search.toLowerCase())
+      );
   };
 
-  const filteredTodos = getFilteredData();
+  // 완료된 항목과 미완료 항목을 필터링하여 최신 순서로 반환
+  const filteredTodos = {
+    done: getFilteredData((todo) => todo.isDone),
+    notDone: getFilteredData((todo) => !todo.isDone),
+  };
 
   const { totalCount, doneCount, notDoneCount } = useMemo(() => {
-    console.log("getAnalyzedData 호출!");
     const totalCount = todos.length;
     const doneCount = todos.filter((todo) => todo.isDone).length;
     const notDoneCount = totalCount - doneCount;
@@ -41,8 +47,8 @@ const List = ({ todos, onUpdate, onDelete }) => {
       <h4>Todo List✳️</h4>
       <div>
         <div>total: {totalCount}</div>
-        <div>Done:{doneCount}</div>
         <div>Not Done:{notDoneCount}</div>
+        <div>Done:{doneCount}</div>
       </div>
       <input
         value={search}
@@ -50,16 +56,24 @@ const List = ({ todos, onUpdate, onDelete }) => {
         placeholder="검색어를 입력하세요"
       />
       <div className="todos_wrapper">
-        {filteredTodos.map((todo) => {
-          return (
-            <TodoItem
-              key={todo.id}
-              {...todo}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-            />
-          );
-        })}
+        <h5>Not Done</h5>
+        {filteredTodos.notDone.map((todo) => (
+          <TodoItem
+            key={todo.id}
+            {...todo}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+          />
+        ))}
+        <h5>Done</h5>
+        {filteredTodos.done.map((todo) => (
+          <TodoItem
+            key={todo.id}
+            {...todo}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+          />
+        ))}
       </div>
     </div>
   );
