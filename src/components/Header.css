@@ -1,3 +1,13 @@
+.Header {
+  width: 780px;
+}
+
 .Header > h1 {
   color: rgb(17, 136, 255);
+}
+
+.head {
+  display: flex;
+  justify-items: center;
+  align-items: center;
 }

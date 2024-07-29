@@ -1,10 +1,14 @@
 import "./Header.css";
 import { memo } from "react";
+import { Toggle } from "./toggle";
 
 const Header = () => {
   return (
     <div className="Header">
-      <h3> 오늘은 📆</h3>
+      <div className="head">
+        <h3> 오늘은 📆</h3>
+        <Toggle />
+      </div>
       <h1>{new Date().toDateString()}</h1>
     </div>
   );
